@@ -1,4 +1,4 @@
-# lib-notifications-sendgrid
+# fireflyframework-notifications-sendgrid
 
 SendGrid email adapter for Firefly Notifications Library.
 
@@ -26,14 +26,14 @@ Add this dependency to your `pom.xml`:
 
 ```xml path=null start=null
 <dependency>
-  <groupId>com.firefly</groupId>
-  <artifactId>lib-notifications-core</artifactId>
+  <groupId>org.fireflyframework</groupId>
+  <artifactId>fireflyframework-notifications-core</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
-  <groupId>com.firefly</groupId>
-  <artifactId>lib-notifications-sendgrid</artifactId>
+  <groupId>org.fireflyframework</groupId>
+  <artifactId>fireflyframework-notifications-sendgrid</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -126,7 +126,7 @@ emailService.sendEmail(request).subscribe();
 To switch from SendGrid to another provider (e.g., Resend):
 
 1. Remove this dependency from `pom.xml`
-2. Add `lib-notifications-resend` dependency
+2. Add `fireflyframework-notifications-resend` dependency
 3. Update configuration to use `provider: resend`
 
 **No code changes required** in your services—that's the power of hexagonal architecture!
@@ -134,7 +134,7 @@ To switch from SendGrid to another provider (e.g., Resend):
 ## Implementation Details
 
 This adapter:
-- Implements `EmailProvider` interface from `lib-notifications-core`
+- Implements `EmailProvider` interface from `fireflyframework-notifications-core`
 - Uses SendGrid Java SDK for API calls
 - Transforms generic `EmailRequestDTO` to SendGrid's `Mail` object
 - Handles authentication via API key
@@ -155,4 +155,4 @@ This adapter:
 ## References
 
 - [SendGrid API Documentation](https://docs.sendgrid.com/api-reference/mail-send/mail-send)
-- [Firefly Notifications Architecture](../lib-notifications/ARCHITECTURE.md)
+- [Firefly Notifications Architecture](../fireflyframework-notifications/ARCHITECTURE.md)
