@@ -1,5 +1,7 @@
 # fireflyframework-notifications-sendgrid
 
+[![CI](https://github.com/fireflyframework/fireflyframework-notifications-sendgrid/actions/workflows/ci.yml/badge.svg)](https://github.com/fireflyframework/fireflyframework-notifications-sendgrid/actions/workflows/ci.yml)
+
 SendGrid email adapter for Firefly Notifications Library.
 
 ## Overview
