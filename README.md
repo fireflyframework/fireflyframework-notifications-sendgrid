@@ -1,160 +1,92 @@
-# fireflyframework-notifications-sendgrid
+# Firefly Framework - Notifications - SendGrid
 
 [![CI](https://github.com/fireflyframework/fireflyframework-notifications-sendgrid/actions/workflows/ci.yml/badge.svg)](https://github.com/fireflyframework/fireflyframework-notifications-sendgrid/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://openjdk.org)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green.svg)](https://spring.io/projects/spring-boot)
 
-SendGrid email adapter for Firefly Notifications Library.
+> SendGrid email adapter for Firefly Notifications.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Overview
 
-This module is an **infrastructure adapter** in the hexagonal architecture that implements the `EmailProvider` port interface. It handles all SendGrid-specific integration details, including API authentication, request transformation, and error handling.
+Firefly Framework Notifications SendGrid implements the `EmailProvider` interface from the Firefly Notifications core module using SendGrid as the delivery provider. It provides `SendGridEmailProvider` which handles email delivery through the SendGrid API.
 
-### Architecture Role
+The module includes auto-configuration for seamless activation when included on the classpath alongside the notifications core module. Configuration properties allow customizing API credentials and provider-specific settings.
 
-```
-Application Layer (EmailService)
-    ↓ depends on
-Domain Layer (EmailProvider interface)
-    ↑ implemented by
-Infrastructure Layer (SendGridEmailProvider) ← THIS MODULE
-    ↓ calls
-SendGrid REST API
-```
+## Features
 
-This adapter can be swapped with other email providers (Resend, AWS SES) without changing your application code.
+- `EmailProvider` implementation using SendGrid
+- Spring Boot auto-configuration for seamless activation
+- Configurable API credentials via application properties
+- Standalone provider library (include alongside fireflyframework-notifications)
+
+## Requirements
+
+- Java 21+
+- Spring Boot 3.x
+- Maven 3.9+
+- SendGrid account and API credentials
 
 ## Installation
 
-Add this dependency to your `pom.xml`:
-
-```xml path=null start=null
+```xml
 <dependency>
-  <groupId>org.fireflyframework</groupId>
-  <artifactId>fireflyframework-notifications-core</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+    <groupId>org.fireflyframework</groupId>
+    <artifactId>fireflyframework-notifications-sendgrid</artifactId>
+    <version>26.01.01</version>
 </dependency>
+```
 
-<dependency>
-  <groupId>org.fireflyframework</groupId>
-  <artifactId>fireflyframework-notifications-sendgrid</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-</dependency>
+## Quick Start
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-notifications</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-notifications-sendgrid</artifactId>
+    </dependency>
+</dependencies>
 ```
 
 ## Configuration
 
-Add the following to your `application.yml`:
-
-```yaml path=null start=null
-notifications:
-  email:
-    provider: sendgrid  # Enables this adapter
-
-sendgrid:
-  api-key: ${SENDGRID_API_KEY}  # Your SendGrid API key
+```yaml
+firefly:
+  notifications:
+    sendgrid:
+      api-key: SG.xxxxxxxxxx
+      from-email: noreply@example.com
+      from-name: My Application
 ```
 
-### Getting Your API Key
+## Documentation
 
-1. Sign up at [sendgrid.com](https://sendgrid.com)
-2. Navigate to Settings → API Keys
-3. Create a new API key with "Mail Send" permissions
-4. Set it as an environment variable:
-   ```bash
-   export SENDGRID_API_KEY="SG.your-key-here"
-   ```
+No additional documentation available for this project.
 
-## Usage
+## Contributing
 
-Inject `EmailService` from the core library. Spring automatically wires this adapter:
+Contributions are welcome. Please read the [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on our code of conduct, development process, and how to submit pull requests.
 
-```java path=null start=null
-@Service
-public class NotificationService {
-    
-    @Autowired
-    private EmailService emailService;
-    
-    public void sendWelcomeEmail(String recipient) {
-        EmailRequestDTO request = EmailRequestDTO.builder()
-            .from("noreply@example.com")
-            .to(List.of(recipient))
-            .subject("Welcome!")
-            .html("<h1>Welcome to our platform</h1>")
-            .text("Welcome to our platform")
-            .build();
-        
-        emailService.sendEmail(request)
-            .subscribe(response -> {
-                if (response.isSuccess()) {
-                    log.info("Email sent: {}", response.getMessageId());
-                } else {
-                    log.error("Failed: {}", response.getError());
-                }
-            });
-    }
-}
-```
+## License
 
-## Features
+Copyright 2024-2026 Firefly Software Solutions Inc.
 
-- **HTML and plain text** emails
-- **CC and BCC** recipients
-- **File attachments** with automatic base64 encoding
-- **Reactive** - returns `Mono<EmailResponseDTO>`
-- **Error handling** - Graceful degradation with error messages
-
-### Sending with Attachments
-
-```java path=null start=null
-EmailAttachmentDTO attachment = EmailAttachmentDTO.builder()
-    .filename("report.pdf")
-    .content(pdfBytes)
-    .contentType("application/pdf")
-    .build();
-
-EmailRequestDTO request = EmailRequestDTO.builder()
-    .from("reports@example.com")
-    .to(List.of("user@example.com"))
-    .subject("Monthly Report")
-    .html("<p>See attached report</p>")
-    .attachments(List.of(attachment))
-    .build();
-
-emailService.sendEmail(request).subscribe();
-```
-
-## Switching Providers
-
-To switch from SendGrid to another provider (e.g., Resend):
-
-1. Remove this dependency from `pom.xml`
-2. Add `fireflyframework-notifications-resend` dependency
-3. Update configuration to use `provider: resend`
-
-**No code changes required** in your services—that's the power of hexagonal architecture!
-
-## Implementation Details
-
-This adapter:
-- Implements `EmailProvider` interface from `fireflyframework-notifications-core`
-- Uses SendGrid Java SDK for API calls
-- Transforms generic `EmailRequestDTO` to SendGrid's `Mail` object
-- Handles authentication via API key
-- Returns standardized `EmailResponseDTO`
-
-## Troubleshooting
-
-### Error: "No qualifying bean of type 'EmailProvider'"
-
-- Ensure `notifications.email.provider=sendgrid` is set
-- Verify `sendgrid.api-key` is configured
-
-### Error: "Unauthorized"
-
-- Check your API key is valid
-- Verify the key has "Mail Send" permissions
-
-## References
-
-- [SendGrid API Documentation](https://docs.sendgrid.com/api-reference/mail-send/mail-send)
-- [Firefly Notifications Architecture](../fireflyframework-notifications/ARCHITECTURE.md)
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
