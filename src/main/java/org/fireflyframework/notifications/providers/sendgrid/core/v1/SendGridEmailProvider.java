@@ -27,9 +27,8 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Attachments;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -39,14 +38,12 @@ import java.util.Base64;
 import java.util.Map;
 
 @Slf4j
-@Component
+@RequiredArgsConstructor
 public class SendGridEmailProvider implements EmailProvider {
 
-    @Autowired
-    private SendGridProperties properties;
+    private final SendGridProperties properties;
 
-    @Autowired
-    private SendGrid sendGrid;
+    private final SendGrid sendGrid;
 
     @Override
     public Mono<EmailResponseDTO> sendEmail(EmailRequestDTO request) {

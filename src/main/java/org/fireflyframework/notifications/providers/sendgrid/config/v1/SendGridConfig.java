@@ -17,22 +17,35 @@
 
 package org.fireflyframework.notifications.providers.sendgrid.config.v1;
 
+import org.fireflyframework.notifications.interfaces.interfaces.providers.email.v1.EmailProvider;
+import org.fireflyframework.notifications.providers.sendgrid.core.v1.SendGridEmailProvider;
 import org.fireflyframework.notifications.providers.sendgrid.properties.v1.SendGridProperties;
 import com.sendgrid.SendGrid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Slf4j
-@Configuration
-@ConditionalOnProperty(prefix = "notifications.email", name = "provider", havingValue = "sendgrid")
+@AutoConfiguration
+@ConditionalOnProperty(name = "firefly.notifications.email.provider", havingValue = "sendgrid")
+@ConditionalOnClass(SendGrid.class)
+@EnableConfigurationProperties(SendGridProperties.class)
 public class SendGridConfig {
 
     @Bean
-    @ConditionalOnProperty(prefix = "sendgrid", name = "api-key")
+    @ConditionalOnProperty(prefix = "firefly.notifications.sendgrid", name = "api-key")
     public SendGrid sendGrid(SendGridProperties properties) {
         log.info("Initializing SendGrid email provider");
         return new SendGrid(properties.getApiKey());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(EmailProvider.class)
+    public EmailProvider sendGridEmailProvider(SendGridProperties properties, SendGrid sendGrid) {
+        return new SendGridEmailProvider(properties, sendGrid);
     }
 }
