@@ -1,1 +1,1 @@
-org.fireflyframework.notifications.providers.sendgrid.config.v1.SendGridConfig
+org.fireflyframework.notifications.providers.sendgrid.config.v1.SendGridAutoConfiguration

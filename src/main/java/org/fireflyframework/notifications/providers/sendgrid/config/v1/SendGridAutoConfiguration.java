@@ -17,7 +17,7 @@
 
 package org.fireflyframework.notifications.providers.sendgrid.config.v1;
 
-import org.fireflyframework.notifications.interfaces.interfaces.providers.email.v1.EmailProvider;
+import org.fireflyframework.notifications.interfaces.providers.email.v1.EmailProvider;
 import org.fireflyframework.notifications.providers.sendgrid.core.v1.SendGridEmailProvider;
 import org.fireflyframework.notifications.providers.sendgrid.properties.v1.SendGridProperties;
 import com.sendgrid.SendGrid;
@@ -34,8 +34,9 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnProperty(name = "firefly.notifications.email.provider", havingValue = "sendgrid")
 @ConditionalOnClass(SendGrid.class)
 @EnableConfigurationProperties(SendGridProperties.class)
-public class SendGridConfig {
+public class SendGridAutoConfiguration {
 
+    @ConditionalOnMissingBean
     @Bean
     @ConditionalOnProperty(prefix = "firefly.notifications.sendgrid", name = "api-key")
     public SendGrid sendGrid(SendGridProperties properties) {

@@ -20,7 +20,7 @@ package org.fireflyframework.notifications.providers.sendgrid.core.v1;
 import org.fireflyframework.notifications.interfaces.dtos.email.v1.EmailAttachmentDTO;
 import org.fireflyframework.notifications.interfaces.dtos.email.v1.EmailRequestDTO;
 import org.fireflyframework.notifications.interfaces.dtos.email.v1.EmailResponseDTO;
-import org.fireflyframework.notifications.interfaces.interfaces.providers.email.v1.EmailProvider;
+import org.fireflyframework.notifications.interfaces.providers.email.v1.EmailProvider;
 import org.fireflyframework.notifications.providers.sendgrid.properties.v1.SendGridProperties;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
