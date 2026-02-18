@@ -1,4 +1,4 @@
 org/fireflyframework/notifications/providers/sendgrid/properties/v1/SendGridProperties.class
-org/fireflyframework/notifications/providers/sendgrid/config/v1/SendGridConfig.class
 org/fireflyframework/notifications/providers/sendgrid/core/v1/SendGridEmailProvider.class
 META-INF/spring-configuration-metadata.json
+org/fireflyframework/notifications/providers/sendgrid/config/v1/SendGridAutoConfiguration.class

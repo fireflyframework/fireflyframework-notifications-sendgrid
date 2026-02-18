@@ -7,21 +7,19 @@
     <parent>
         <groupId>org.fireflyframework</groupId>
         <artifactId>fireflyframework-parent</artifactId>
-        <version>26.02.04</version>
+        <version>26.02.05</version>
         <relativePath/>
     </parent>
 
     <groupId>org.fireflyframework</groupId>
     <artifactId>fireflyframework-notifications-sendgrid</artifactId>
-    <version>26.02.04</version>
+    <version>26.02.05</version>
     <packaging>jar</packaging>
 
     <name>Firefly Framework - Notifications - SendGrid</name>
     <description>SendGrid Email adapter for Firefly Notifications</description>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
         <sendgrid.version>4.10.3</sendgrid.version>
     </properties>
 
